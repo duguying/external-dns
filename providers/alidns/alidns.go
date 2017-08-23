@@ -9,6 +9,7 @@ import (
 	api "github.com/denverdino/aliyungo/dns"
 	"github.com/rancher/external-dns/providers"
 	"github.com/rancher/external-dns/utils"
+	"strconv"
 )
 
 type AlidnsProvider struct {
@@ -112,7 +113,8 @@ func (a *AlidnsProvider) GetRecords() ([]utils.DnsRecord, error) {
 		}
 
 		recordTTLs[fqdn] = map[string]int{}
-		recordTTLs[fqdn][rec.Type] = int(rec.TTL)
+		ttl, _ := strconv.Atoi(rec.TTL)
+		recordTTLs[fqdn][rec.Type] = ttl
 		recordSet, exists := recordMap[fqdn]
 		if exists {
 			recordSlice, sliceExists := recordSet[rec.Type]
