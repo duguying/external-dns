@@ -56,7 +56,7 @@ func (a *AlidnsProvider) HealthCheck() error {
 	return err
 }
 
-func (a *AlidnsProvider) AddRecord(record utils.DnsRecord) error {
+func (a *AlidnsProvider) createRecord(record utils.DnsRecord) error {
 	for _, rec := range record.Records {
 		r := a.prepareRecord(record, rec)
 		if _, err := a.client.AddDomainRecord(r); err != nil {
@@ -67,12 +67,17 @@ func (a *AlidnsProvider) AddRecord(record utils.DnsRecord) error {
 	return nil
 }
 
+func (a *AlidnsProvider) AddRecord(record utils.DnsRecord) error {
+	a.RemoveRecord(record)
+	return a.createRecord(record)
+}
+
 func (a *AlidnsProvider) UpdateRecord(record utils.DnsRecord) error {
 	if err := a.RemoveRecord(record); err != nil {
 		return err
 	}
 
-	return a.AddRecord(record)
+	return a.createRecord(record)
 }
 
 func (a *AlidnsProvider) RemoveRecord(record utils.DnsRecord) error {
