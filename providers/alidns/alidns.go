@@ -72,6 +72,7 @@ func (a *AlidnsProvider) AddRecord(record utils.DnsRecord) error {
 }
 
 func (a *AlidnsProvider) UpdateRecord(record utils.DnsRecord) error {
+	// fixme: fix as soft update
 	if err := a.RemoveRecord(record); err != nil {
 		return err
 	}
@@ -160,9 +161,7 @@ func (a *AlidnsProvider) prepareRecord(record utils.DnsRecord, rec string) *api.
 
 func (a *AlidnsProvider) findRecords(record utils.DnsRecord) ([]api.RecordType, error) {
 	var records []api.RecordType
-	result, err := a.client.DescribeDomainRecords(&api.DescribeDomainRecordsArgs{
-		DomainName: a.rootDomainName,
-	})
+	result, err := a.getAllRecord()
 	if err != nil {
 		return records, fmt.Errorf("Alibaba Cloud API call has failed: %v", err)
 	}
