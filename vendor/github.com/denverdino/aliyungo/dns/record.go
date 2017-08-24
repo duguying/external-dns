@@ -21,7 +21,7 @@ type RecordType struct {
 	Type       string
 	Value      string
 	TTL        string
-	Priority   int32
+	Priority   string
 	Line       string
 	Status     string
 	Locked     bool
