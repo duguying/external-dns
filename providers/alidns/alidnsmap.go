@@ -32,6 +32,9 @@ func (a *AlidnsProvider) getRecordPage(pageSize int, pageNumber int) (resp *api.
 	arg.PageNumber = pageNumber
 	arg.PageSize = pageSize
 	resp, err = a.client.DescribeDomainRecords(&arg)
+	if err != nil {
+		return nil, 0, err
+	}
 	count := resp.TotalCount
 	totalPage = count / pageSize
 	if count%pageSize > 0 {
