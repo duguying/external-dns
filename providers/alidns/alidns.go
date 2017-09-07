@@ -117,7 +117,7 @@ func (a *AlidnsProvider) GetRecords() ([]utils.DnsRecord, error) {
 		}
 
 		recordTTLs[fqdn] = map[string]int{}
-		ttl, _ := strconv.Atoi(rec.TTL)
+		ttl, _ := strconv.Atoi(fmt.Sprintf("%v",rec.TTL))
 		recordTTLs[fqdn][rec.Type] = ttl
 		recordSet, exists := recordMap[fqdn]
 		if exists {
