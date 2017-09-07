@@ -42,3 +42,7 @@ func (a *AlidnsProvider) getRecordPage(pageSize int, pageNumber int) (resp *api.
 	}
 	return resp, totalPage, err
 }
+
+func (a *AlidnsProvider) softUpdateRecord() {
+
+}
