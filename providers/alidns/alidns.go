@@ -68,11 +68,17 @@ func (a *AlidnsProvider) createRecord(record utils.DnsRecord) error {
 }
 
 func (a *AlidnsProvider) AddRecord(record utils.DnsRecord) error {
+	a.checkLongRecordAndCut(&record)
+
 	return a.createRecord(record)
 }
 
 func (a *AlidnsProvider) UpdateRecord(record utils.DnsRecord) error {
 	// fixme: fix as soft update
+	a.checkLongRecordAndCut(&record)
+
+	fmt.Println(record)
+
 	if err := a.RemoveRecord(record); err != nil {
 		return err
 	}
@@ -95,6 +101,12 @@ func (a *AlidnsProvider) RemoveRecord(record utils.DnsRecord) error {
 	}
 
 	return nil
+}
+
+func (a *AlidnsProvider) checkLongRecordAndCut(record *utils.DnsRecord) {
+	if len(record.Records) > 10 {
+		record.Records = record.Records[:10]
+	}
 }
 
 func (a *AlidnsProvider) GetRecords() ([]utils.DnsRecord, error) {
